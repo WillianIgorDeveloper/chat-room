@@ -1,6 +1,5 @@
 import { ChatCircleDots, Check, CircleNotch, DiscordLogo, GithubLogo, MagicWand } from 'phosphor-react'
 import { useState } from 'react'
-import { ThemeToggle } from '../components/ThemeToggle'
 import { supabase } from '../../supabaseClient'
 
 export const Login = () => {
@@ -25,9 +24,7 @@ export const Login = () => {
         e.preventDefault()
         setLoading(true)
         const email = e.target.email.value
-        const { data, error } = await supabase.auth.signInWithOtp({
-            email: email,
-        })
+        await supabase.auth.signInWithOtp({ email })
         setLoading(false)
         console.log(error)
         if (error) {
