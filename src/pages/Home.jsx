@@ -11,6 +11,9 @@ export const Home = () => {
 
     return (
         <div className='flex flex-col h-screen md:flex-row'>
+            <div className='fixed top-5 right-5'>
+                <ThemeToggle />
+            </div>
             <div className='py-20 flex flex-col items-center gap-6 w-2/3 text-center m-auto md:w-2/5 md:max-w-md'>
                 <img src="/home-undraw.svg" alt="Ilustração" />
                 <h1 className='flex items-center gap-3 text-4xl text-indigo-0'><ChatCircleDots /> Chat Room</h1>
