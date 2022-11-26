@@ -7,6 +7,7 @@ export const Login = () => {
 
     const [loading, setLoading] = useState(false)
     const [mailSended, setMailSended] = useState(false)
+    const [mailError, setMailError] = useState(false)
 
     async function signInWithDiscord() {
         const { data, error } = await supabase.auth.signInWithOAuth({
@@ -21,13 +22,17 @@ export const Login = () => {
     }
 
     async function signInWithEmail(e) {
-        email.preventDefault()
+        e.preventDefault()
         setLoading(true)
         const email = e.target.email.value
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
         })
         setLoading(false)
+        if (error) {
+            setMailError(true)
+            return
+        }
         setMailSended(true)
     }
 
@@ -51,6 +56,13 @@ export const Login = () => {
                             <h2>Verifique sua caixa de e-mail.</h2>
                         </div>
                     ) 
+                    : mailError 
+                    ? (
+                        <div className='flex items-center gap-3 justify-center px-3 flex-col'>
+                            <h2 className='text-xl text-indigo-1 '>Email inválido!</h2>
+                            <p className='text-sm underline hover:cursor-pointer' onClick={() => {setLoading(false); setMailSended(false); setMailError(false)}}>tentar novamente</p>
+                        </div>
+                    )
                     : (
                         <div>
                             <span className='block text-center pb-5 text-xl font-medium'>Login</span>
