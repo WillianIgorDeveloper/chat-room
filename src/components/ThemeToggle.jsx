@@ -18,20 +18,19 @@ export const ThemeToggle = () => {
 
    return (
       <div className="
-         text-2xl relative
-         text-nord-polarNight-1
-         dark:text-nord-snowStorm-1
+         absolute top-5 right-5 p-2 rounded shadow cursor-pointer
+         text-2xl
+         bg-indigo-1 text-white-2 hover:bg-indigo-2
       ">
-         <Palette onClick={()=>{setIsOptionsOpen(!isOptionsOpen)}} className="cursor-pointer active:scale-95" />
+         <Palette onClick={()=>{setIsOptionsOpen(!isOptionsOpen)}} />
          <div className={`
-            absolute top-9 -right-1 py-3 px-6 rounded shadow text-xl flex flex-col gap-4
-            bg-nord-snowStorm-2 text-nord-polarNight-1
-            dark:bg-nord-polarNight-2 dark:text-nord-snowStorm-1
+            absolute top-11 right-0 rounded shadow text-xl flex flex-col overflow-hidden
+            bg-indigo-1 text-white-1
             ${isOptionsOpen ? "" : "hidden"}
          `}>
-            <span className="flex items-center gap-3 hover:scale-105 cursor-pointer" onClick={()=>{setChangeTheme(!changeTheme); setIsOptionsOpen(!isOptionsOpen); localStorage.theme = 'dark'}}><Moon />Escuro</span>
-            <span className="flex items-center gap-3 hover:scale-105 cursor-pointer" onClick={()=>{setChangeTheme(!changeTheme); setIsOptionsOpen(!isOptionsOpen); localStorage.theme = 'light'}}><Sun />Claro</span>
-            <span className="flex items-center gap-3 hover:scale-105 cursor-pointer" onClick={()=>{setChangeTheme(!changeTheme); setIsOptionsOpen(!isOptionsOpen); localStorage.removeItem('theme')}}><Monitor />Sistema</span>
+            <span className="flex items-center gap-3 px-6 py-2 cursor-pointer hover:bg-indigo-2" onClick={()=>{setChangeTheme(!changeTheme); setIsOptionsOpen(!isOptionsOpen); localStorage.theme = 'dark'}}><Moon />Escuro</span>
+            <span className="flex items-center gap-3 px-6 py-2 cursor-pointer hover:bg-indigo-2" onClick={()=>{setChangeTheme(!changeTheme); setIsOptionsOpen(!isOptionsOpen); localStorage.theme = 'light'}}><Sun />Claro</span>
+            <span className="flex items-center gap-3 px-6 py-2 cursor-pointer hover:bg-indigo-2" onClick={()=>{setChangeTheme(!changeTheme); setIsOptionsOpen(!isOptionsOpen); localStorage.removeItem('theme')}}><Monitor />Sistema</span>
          </div>
       </div>
    )

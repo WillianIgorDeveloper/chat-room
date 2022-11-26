@@ -7,24 +7,20 @@ module.exports = {
   ],
   theme: {
     colors: {
-      "indigo-0": "#3e63dd",
-      "indigo-1": "#5373e7",
-      "indigo-2": "#849dff",
-      "gray-white-0": "#f1f3f5",
-      "gray-white-1": "#f8f9fa",
-      "gray-white-2": "#fbfcfd",
-      "gray-black-0": "#11181c",
-      "gray-black-1": "#687076",
-      "gray-black-2": "#7e868c",
+      "indigo-0": "#4338ca",
+      "indigo-1": "#4f46e5",
+      "indigo-2": "#6366f1",
+      "white-0": "#D8DEE9",
+      "white-1": "#E5E9F0",
+      "white-2": "#ECEFF4",
+      "black-0": "#2E3440",
+      "black-1": "#3B4252",
+      "black-2": "#434C5E",
     },
     fontFamily: {
       'sans': ['Rubik', 'sans-serif'],
     },
-    extend: {
-      backgroundImage: {
-        'home-undraw': "url('/home-undraw.svg')",
-      },
-    },
+    extend: {},
   },
   plugins: [],
 }
