@@ -24,8 +24,14 @@ export const Login = () => {
         e.preventDefault()
         setLoading(true)
         const email = e.target.email.value
-        await supabase.auth.signInWithOtp({ email })
+        const { data, error } = await supabase.auth.signInWithOtp({
+            email: email
+          })
         setLoading(false)
+        if (error) {
+            setMailError(true)
+            return
+        }
         setMailSended(true)
     }
 
