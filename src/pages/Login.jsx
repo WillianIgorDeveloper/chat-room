@@ -8,33 +8,40 @@ export const Login = () => {
     const [mailSended, setMailSended] = useState(false)
     const [mailError, setMailError] = useState(false)
 
+    async function signInWithEmail(e) {
+
+        e.preventDefault()
+
+        const email = e.target.email.value
+
+        setLoading(true)
+
+        const { error } = await supabase.auth.signInWithOtp({
+            email
+        })
+
+        if (error) {
+            setLoading(false)
+            setMailError(true)
+        }
+
+        setLoading(false)
+        setMailSended(true)
+    }
+      
+
     async function signInWithDiscord() {
         const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: 'discord',
+          provider: 'discord',
         })
     }
 
     async function signInWithGitHub() {
         const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: 'github',
+          provider: 'github',
         })
     }
-
-    async function signInWithEmail(e) {
-        e.preventDefault()
-        setLoading(true)
-        const email = e.target.email.value
-        const { data, error } = await supabase.auth.signInWithOtp({
-            email: email
-          })
-        setLoading(false)
-        if (error) {
-            setMailError(true)
-            return
-        }
-        setMailSended(true)
-    }
-
+      
     return (
         <div className='h-screen w-full flex flex-col items-center justify-center'>
             <h1 className='flex items-center gap-3 text-4xl text-indigo-1'><ChatCircleDots />Chat Room</h1>
@@ -69,7 +76,7 @@ export const Login = () => {
                                 <button onClick={signInWithDiscord} className="flex items-center justify-center gap-3 bg-indigo-1 hover:bg-indigo-2 py-2 w-60 text-lg text-white-2 rounded"><DiscordLogo />Entrar com Discord</button>
                                 <button onClick={signInWithGitHub} className="flex items-center justify-center gap-3 bg-indigo-1 hover:bg-indigo-2 py-2 w-60 text-lg text-white-2 rounded"><GithubLogo />Entrar com Github</button>
                             </div>
-                            <form className='flex flex-col items-center gap-1' onSubmit={e => {signInWithEmail(e)}}>
+                            <form className='flex flex-col items-center gap-1' onSubmit={signInWithEmail}>
                                 <label htmlFor="email" className='flex items-center justify-center gap-2 pt-5'>Entrar com link mágico <MagicWand /></label>
                                 <input type="email" name="email" id="email" placeholder='Digite seu e-mail...' className='bg-white-2 text-black-1 py-2 px-4 w-60 rounded focus:outline-indigo-1' />
                             </form>
