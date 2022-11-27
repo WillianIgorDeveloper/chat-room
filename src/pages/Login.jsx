@@ -1,8 +1,9 @@
 import { ChatCircleDots, Check, CircleNotch, DiscordLogo, GithubLogo, MagicWand } from 'phosphor-react'
 import { useState } from 'react'
+import { Navigate } from 'react-router-dom'
 import { supabase } from '../../supabaseClient'
 
-export const Login = () => {
+export const Login = ({session: {session}}) => {
 
     const [loading, setLoading] = useState(false)
     const [mailSended, setMailSended] = useState(false)
@@ -16,9 +17,7 @@ export const Login = () => {
 
         setLoading(true)
 
-        const { error } = await supabase.auth.signInWithOtp({
-            email
-        })
+        const { error } = await supabase.auth.signInWithOtp({ email })
 
         if (error) {
             setLoading(false)
@@ -32,19 +31,22 @@ export const Login = () => {
       
 
     async function signInWithDiscord() {
-        const { data, error } = await supabase.auth.signInWithOAuth({
+        await supabase.auth.signInWithOAuth({
           provider: 'discord',
         })
     }
 
     async function signInWithGitHub() {
-        const { data, error } = await supabase.auth.signInWithOAuth({
+        await supabase.auth.signInWithOAuth({
           provider: 'github',
         })
     }
       
     return (
         <div className='h-screen w-full flex flex-col items-center justify-center'>
+            {
+                session && <Navigate to="/app" />
+            }
             <h1 className='flex items-center gap-3 text-4xl text-indigo-1'><ChatCircleDots />Chat Room</h1>
 
             <div className='bg-white-1 dark:bg-black-1 m-4 max-w-sm py-5 rounded shadow-lg'>
@@ -58,14 +60,14 @@ export const Login = () => {
                     )
                     : mailSended 
                     ? (
-                        <div className='text-xl text-indigo-1 flex items-center gap-3 justify-center px-3 '>
+                        <div className='text-xl text-indigo-1 flex items-center gap-3 justify-center px-3 min-w-[260px]'>
                             <Check className='text-2xl' />
                             <h2>Verifique sua caixa de e-mail.</h2>
                         </div>
                     ) 
                     : mailError 
                     ? (
-                        <div className='flex items-center gap-3 justify-center px-3 flex-col'>
+                        <div className='flex items-center gap-3 justify-center px-3 flex-col min-w-[260px]'>
                             <h2 className='text-xl text-indigo-1 '>Email inválido!</h2>
                             <p className='text-sm underline hover:cursor-pointer' onClick={() => {setLoading(false); setMailSended(false); setMailError(false)}}>tentar novamente</p>
                         </div>
@@ -77,9 +79,10 @@ export const Login = () => {
                                 <button onClick={signInWithDiscord} className="flex items-center justify-center gap-3 bg-indigo-1 hover:bg-indigo-2 py-2 w-60 text-lg text-white-2 rounded"><DiscordLogo />Entrar com Discord</button>
                                 <button onClick={signInWithGitHub} className="flex items-center justify-center gap-3 bg-indigo-1 hover:bg-indigo-2 py-2 w-60 text-lg text-white-2 rounded"><GithubLogo />Entrar com Github</button>
                             </div>
-                            <form className='flex flex-col items-center gap-1' onSubmit={signInWithEmail}>
+                            <form className='flex flex-col items-center gap-2' onSubmit={signInWithEmail}>
                                 <label htmlFor="email" className='flex items-center justify-center gap-2 pt-5'>Entrar com link mágico <MagicWand /></label>
                                 <input type="email" name="email" id="email" placeholder='Digite seu e-mail...' className='bg-white-2 text-black-1 py-2 px-4 w-60 rounded focus:outline-indigo-1' />
+                                <button type='submit' className="flex items-center justify-center gap-3 bg-indigo-1 hover:bg-indigo-2 py-2 w-60 text-white-2 rounded">Enviar</button>
                             </form>
                         </div>
                     )
