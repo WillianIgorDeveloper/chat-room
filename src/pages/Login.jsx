@@ -23,6 +23,7 @@ export const Login = () => {
         if (error) {
             setLoading(false)
             setMailError(true)
+            return
         }
 
         setLoading(false)

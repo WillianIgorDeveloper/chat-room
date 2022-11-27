@@ -18,7 +18,7 @@ export const ThemeToggle = () => {
 
    return (
       <div className="
-         absolute top-5 right-5 p-2 rounded shadow cursor-pointer
+         absolute top-5 right-5 p-2 rounded shadow cursor-pointer z-20
          text-2xl
          bg-indigo-1 text-white-2 hover:bg-indigo-2
       ">

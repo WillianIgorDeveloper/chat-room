@@ -1,21 +1,10 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../supabaseClient'
 import { Navigate } from 'react-router-dom'
+import { useGetSession } from '../hooks/useGetSession'
 
-export const App = () => {
+export const App = ( { session: {session} } ) => {
 
-    const [session, setSession] = useState(null)
-
-    useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setSession(session)
-        })
-        
-        supabase.auth.onAuthStateChange((_event, session) => {
-          setSession(session)
-        })
-    }, [])
-    
     return (
         <div>
             {
