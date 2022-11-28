@@ -1,13 +1,25 @@
-import { ChatCircleDots, Check, CircleNotch, DiscordLogo, GithubLogo, MagicWand } from 'phosphor-react'
-import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { ChatCircleDots, Check, CircleNotch, DiscordLogo, GithubLogo, MagicWand, Warning } from 'phosphor-react'
+import { useState, useEffect } from 'react'
 import { supabase } from '../../supabaseClient'
+import { useNavigate } from "react-router-dom"
 
-export const Login = ({session: {session}}) => {
+export const Login = () => {
+
+    const navigate = useNavigate()
+
+    const verifySession = async () => {
+        await supabase.auth.getSession().then(({ data: { session } }) => {
+            session && navigate('/app')
+        })
+    }
+
+    useEffect(() => {
+        verifySession()
+    }, [])
 
     const [loading, setLoading] = useState(false)
     const [mailSended, setMailSended] = useState(false)
-    const [mailError, setMailError] = useState(false)
+    const [serverError, setServerError] = useState(false)
 
     async function signInWithEmail(e) {
 
@@ -15,40 +27,39 @@ export const Login = ({session: {session}}) => {
 
         const email = e.target.email.value
 
-        setLoading(true)
-
-        const { error } = await supabase.auth.signInWithOtp({ email })
-
-        if (error) {
+        try {
+            setLoading(true)
+            const { error } = await supabase.auth.signInWithOtp({ email })
+            if (error) throw error
+        }
+        catch (error) {
             setLoading(false)
-            setMailError(true)
-            return
+            setServerError(true)
+        }
+        finally {
+            setLoading(false)
+            setMailSended(true)
         }
 
-        setLoading(false)
-        setMailSended(true)
     }
       
-
     async function signInWithDiscord() {
-        await supabase.auth.signInWithOAuth({
+        const { error } = await supabase.auth.signInWithOAuth({
           provider: 'discord',
         })
+        error && setServerError(true)
     }
 
     async function signInWithGitHub() {
-        await supabase.auth.signInWithOAuth({
+        const { error } = await supabase.auth.signInWithOAuth({
           provider: 'github',
         })
+        error && setServerError(true)
     }
       
     return (
         <div className='h-screen w-full flex flex-col items-center justify-center'>
-            {
-                session && <Navigate to="/app" />
-            }
             <h1 className='flex items-center gap-3 text-4xl text-indigo-1'><ChatCircleDots />Chat Room</h1>
-
             <div className='bg-white-1 dark:bg-black-1 m-4 max-w-sm py-5 rounded shadow-lg'>
                 {
                     loading
@@ -58,17 +69,17 @@ export const Login = ({session: {session}}) => {
                             <h2>Carregando...</h2>
                         </div>
                     )
-                    : mailSended 
+                    : mailSended
                     ? (
                         <div className='text-xl text-indigo-1 flex items-center gap-3 justify-center px-3 min-w-[260px]'>
                             <Check className='text-2xl' />
                             <h2>Verifique sua caixa de e-mail.</h2>
                         </div>
                     ) 
-                    : mailError 
+                    : serverError
                     ? (
                         <div className='flex items-center gap-3 justify-center px-3 flex-col min-w-[260px]'>
-                            <h2 className='text-xl text-indigo-1 '>Email inválido!</h2>
+                            <h2 className='text-xl text-indigo-1 flex items-center gap-3'><Warning className='text-2xl animate-bounce' /> Algo deu errado.</h2>
                             <p className='text-sm underline hover:cursor-pointer' onClick={() => {setLoading(false); setMailSended(false); setMailError(false)}}>tentar novamente</p>
                         </div>
                     )

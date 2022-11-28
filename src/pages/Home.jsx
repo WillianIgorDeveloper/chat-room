@@ -5,7 +5,6 @@ import vite from '../assets/vite.svg'
 import tailwind from '../assets/tailwindcss.svg'
 import supabaseIcon from '../assets/supabase.svg'
 import reactRouter from '../assets/reactrouter.svg'
-import { ThemeToggle } from '../components/ThemeToggle'
 
 export const Home = () => {
 
