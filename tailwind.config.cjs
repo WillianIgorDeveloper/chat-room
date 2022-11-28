@@ -16,6 +16,10 @@ module.exports = {
       "black-0": "#2E3440",
       "black-1": "#3B4252",
       "black-2": "#434C5E",
+      "red": "#BF616A",
+      "orange": "#D08770",
+      "yellow": "#EBCB8B",
+      "green": "#A3BE8C",
     },
     fontFamily: {
       'sans': ['Rubik', 'sans-serif'],
