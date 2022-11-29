@@ -139,7 +139,7 @@ export const App = () => {
 
    async function signout() {
       const { error } = await supabase.auth.signOut()
-      redirect('/')
+      navigate('/')
    }
 
 
