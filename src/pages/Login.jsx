@@ -1,23 +1,44 @@
-import { useState } from 'react'
-import { DiscordLogo, GithubLogo, MagicWand } from 'phosphor-react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
+import { DiscordLogo, GithubLogo, GoogleLogo, MagicWand } from 'phosphor-react'
 import { supabase } from '../../supabaseClient'
 
+import { ThemeToggle } from "../components/ThemeToggle"
+import { Logo } from '../components/Logo'
+import { Button } from '../components/Button'
 import { Loading } from '../components/Loading'
 import { MailSended } from '../components/MailSended'
 import { ServerError } from "../components/ServerError"
-import { Logo } from '../components/Logo'
-import { Button } from '../components/Button'
-import { ThemeToggle } from "../components/ThemeToggle"
 
-import { useGetSession } from "../hooks/useGetSession"
 
 export const Login = () => {
 
+   const navigate = useNavigate()
    const [loading, setLoading] = useState(false)
    const [serverError, setServerError] = useState(false)
    const [mailSended, setMailSended] = useState(false)
 
-   const session = useGetSession("app")
+
+
+   const getSession = async () => {
+      setLoading(true)
+      const { data, error } = await supabase.auth.getSession()
+      if (error) {
+         setServerError(true)
+         return
+      }
+      if (data.session != null) {
+         navigate('/app')
+         return
+      }
+      setLoading(false)
+   }
+
+   useEffect(() => {
+      getSession()
+   }, [])
+
+
 
    async function signInWithEmail(e) {
       e.preventDefault()
@@ -36,6 +57,8 @@ export const Login = () => {
       }
    }
 
+
+
    async function signInWithDiscord() {
       const { error } = await supabase.auth.signInWithOAuth({
          provider: 'discord',
@@ -43,12 +66,16 @@ export const Login = () => {
       error && setServerError(true)
    }
 
+
+
    async function signInWithGitHub() {
       const { error } = await supabase.auth.signInWithOAuth({
          provider: 'github',
       })
       error && setServerError(true)
    }
+
+
 
    return (
       <div className='h-screen w-full flex flex-col items-center justify-center p-4'>

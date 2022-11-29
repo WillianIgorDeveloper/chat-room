@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { PencilSimple } from 'phosphor-react'
 import { supabase } from "../../supabaseClient"
 
+import { ThemeToggle } from "../components/ThemeToggle"
 import { Loading } from "../components/Loading"
 import { ServerError } from "../components/ServerError"
-
-import { useGetSession } from "../hooks/useGetSession"
-import { useGetUser } from "../hooks/useGetUser"
-import { ThemeToggle } from "../components/ThemeToggle"
 import { Link } from "react-router-dom"
-import { useGetMessages } from "../hooks/useGetMessages"
-
-
-import { useNavigate } from "react-router-dom"
 
 
 export const App = () => {
