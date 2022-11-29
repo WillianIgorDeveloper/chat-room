@@ -139,7 +139,7 @@ export const App = () => {
 
    async function signout() {
       const { error } = await supabase.auth.signOut()
-      navigate('/')
+      navigate('/login')
    }
 
 
@@ -160,7 +160,7 @@ export const App = () => {
                            <ThemeToggle position="right" />
                         </div>
 
-                        <div className="flex-1 overflow-hidden p-3 overflow-y-auto flex flex-col gap-3">
+                        <div className="flex-1 overflow-hidden p-3 overflow-y-auto flex flex-col gap-3" height={height}>
                            {
                               messages &&
                               messages.map(element => {
