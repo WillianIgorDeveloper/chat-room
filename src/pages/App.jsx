@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { redirect, useNavigate } from "react-router-dom"
 import { PencilSimple } from 'phosphor-react'
 import { supabase } from "../../supabaseClient"
 
@@ -124,7 +124,6 @@ export const App = () => {
    }
 
    useEffect(() => {
-
       supabase.channel('messages')
          .on(
             'postgres_changes',
@@ -135,6 +134,15 @@ export const App = () => {
          )
          .subscribe()
    }, [])
+
+
+
+   async function signout() {
+      const { error } = await supabase.auth.signOut()
+      redirect('/home')
+   }
+
+
 
    return (
       <div className="p-2 h-screen">
@@ -147,6 +155,7 @@ export const App = () => {
                            <div className="flex items-center gap-3 pl-3">
                               <span>{user.nick_name}</span>
                               <Link to="/updateUser" title="Editar perfil"><PencilSimple className="text-xl" /></Link>
+                              <button className="bg-red py-1 px-3 rounded ml-4" title="Encerrar sessão" onClick={signout}>Sair</button>
                            </div>
                            <ThemeToggle position="right" />
                         </div>
